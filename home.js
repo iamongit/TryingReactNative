@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
       },
       ios: {
         minHeight: 36,
-        width: 'width',
+        width: Dimensions.get('window').width - 30,
       },
     }),
     // breaks tests - fix before release

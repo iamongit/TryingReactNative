@@ -4,7 +4,7 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View, BackHandler, ToastAndroid, Modal, DatePickerAndroid, DatePickerIOS
+  View, BackHandler, ToastAndroid, Modal, DatePickerAndroid, DatePickerIOS, Heading, Switch
 } from 'react-native';
 // import Modal from 'react-native-modal'
 import { FormLabel, FormInput, FormValidationMessage, Button, CheckBox } from 'react-native-elements';
@@ -30,10 +30,11 @@ class ElementsPage extends React.Component {
             checked: false,
             showModal: false,
             modalDetails: {},
-            selectedValue:0,
-            timeZoneOffsetInHours: 0,
+            selectedValue: new Date(),
+            timeZoneOffsetInHours: (-1) * (new Date()).getTimezoneOffset() / 60,
             date: 'mm-dd-yyyy',
-            showiosDatePicker: false
+            showiosDatePicker: false,
+            iosDate: new Date()
         }
         console.log(this.props);
         console.log(this.state);
@@ -44,6 +45,7 @@ class ElementsPage extends React.Component {
         this.closeModal = this.closeModal.bind(this);
         this.showAndroidDatePicker = this.showAndroidDatePicker.bind(this);
         this.openDatePicker = this.openDatePicker.bind(this);
+        this.onDateChange = this.onDateChange.bind(this);
     }
 
     handleBackButton() {
@@ -108,6 +110,11 @@ class ElementsPage extends React.Component {
             console.warn('Cannot open date picker', message);
         }
     };
+
+    onDateChange (date) {
+        this.setState({iosDate: date, date: date.toLocaleDateString()});
+        console.log(this.state.selectedValue, date, 'on date change')
+    }
 
     render() {
       return (<View style={
@@ -188,15 +195,17 @@ class ElementsPage extends React.Component {
                 Selected Date: {this.state.date}
             </Text>
         </View>
-
-        <View>
-        {Platform.OS === 'ios' ?
-            <DatePickerIOS date={this.state.selectedValue} mode="date" timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60} onDateChange={(date) => {
-                this.setState({date: date, showiosDatePicker: false });
-                }} /> :
+        <Switch onValueChange={this.showModal} value={true} />
+        {Platform.OS === 'ios' && this.state.showiosDatePicker ?
+            <DatePickerIOS
+              date={this.state.iosDate}
+              mode="date"
+              timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
+              onDateChange={this.onDateChange}
+              style={{height: 200, width: 200}}
+            /> :
             null
         }
-        </View>
       </View>);
     }
   }

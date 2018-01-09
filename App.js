@@ -25,7 +25,7 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-const FeedStack = DrawerNavigator({
+const FeedStack = StackNavigator({
   Home: { screen: Home, backBehavior: 'none'  },
   NewP: {
     screen: NewPage,

@@ -90,7 +90,7 @@ class ModalPage extends React.Component {
                 xlarge
                 rounded
                 source={{uri: this.props.details.avatar_url}}
-                onPress={() => console.log("Works!")}
+                onPress={() => this.closeModal()}
                 activeOpacity={0.7}
                 />
                 <Text>{this.props.details.name}</Text>
