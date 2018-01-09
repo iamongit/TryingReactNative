@@ -32,7 +32,8 @@ class ElementsPage extends React.Component {
             modalDetails: {},
             selectedValue:0,
             timeZoneOffsetInHours: 0,
-            date: 'mm-dd-yyyy'
+            date: 'mm-dd-yyyy',
+            showiosDatePicker: false
         }
         console.log(this.props);
         console.log(this.state);
@@ -58,6 +59,7 @@ class ElementsPage extends React.Component {
         if (Platform.OS === 'android') {
             this.showAndroidDatePicker();
         } else {
+            this.setState({showiosDatePicker: true});
             console.log('ios');
         }
     }
@@ -174,17 +176,24 @@ class ElementsPage extends React.Component {
         title='HOME'
         onPress={this.route} />
 
-        <Button
-        containerViewStyle={{width: 150}}
-        raised
-        backgroundColor="#397af8"
-        icon={{name: 'fingerprint'}}
-        title='DATE PICKER'
-        onPress={this.openDatePicker} />
-        <Text> Selected Date: {this.state.date} </Text>
+        <View style={{paddingTop: 5}}>
+            <Button
+                containerViewStyle={{width: 150}}
+                raised
+                backgroundColor="#397af8"
+                icon={{name: 'fingerprint'}}
+                title='DATE PICKER'
+                onPress={this.openDatePicker} />
+            <Text>
+                Selected Date: {this.state.date}
+            </Text>
+        </View>
+
         <View>
         {Platform.OS === 'ios' ?
-            <DatePickerIOS date={this.state.selectedValue} mode="date" timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60} onDateChange={(date) => { this.setState({selectedValue: date})}} /> :
+            <DatePickerIOS date={this.state.selectedValue} mode="date" timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60} onDateChange={(date) => {
+                this.setState({date: date, showiosDatePicker: false });
+                }} /> :
             null
         }
         </View>
